@@ -1,122 +1,413 @@
 <!DOCTYPE html>
-<html lang="english">
-  <head>
-    <title>exported project</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta charset="utf-8" />
-    <meta property="twitter:card" content="summary_large_image" />
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan Realisasi Content Planner SMP Darun Najah 2</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --color-primary: #6a11cb;
+            --color-secondary: #2575fc;
+            --color-success: #28a745;
+            --color-danger: #dc3545;
+            --color-warning: #ffc107;
+            --color-bg-light: #f8f9fa;
+            --color-text-dark: #343a40;
+            --color-text-light: #ffffff;
+            --color-card-bg: #ffffff;
+        }
 
-    <style data-tag="reset-style-sheet">
-      html {  line-height: 1.15;}body {  margin: 0;}* {  box-sizing: border-box;  border-width: 0;  border-style: solid;}p,li,ul,pre,div,h1,h2,h3,h4,h5,h6,figure,blockquote,figcaption {  margin: 0;  padding: 0;}button {  background-color: transparent;}button,input,optgroup,select,textarea {  font-family: inherit;  font-size: 100%;  line-height: 1.15;  margin: 0;}button,select {  text-transform: none;}button,[type="button"],[type="reset"],[type="submit"] {  -webkit-appearance: button;}button::-moz-focus-inner,[type="button"]::-moz-focus-inner,[type="reset"]::-moz-focus-inner,[type="submit"]::-moz-focus-inner {  border-style: none;  padding: 0;}button:-moz-focus,[type="button"]:-moz-focus,[type="reset"]:-moz-focus,[type="submit"]:-moz-focus {  outline: 1px dotted ButtonText;}a {  color: inherit;  text-decoration: inherit;}input {  padding: 2px 4px;}img {  display: block;}html { scroll-behavior: smooth  }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+            color: var(--color-text-dark);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            color: var(--color-primary);
+            font-size: 2.5em;
+            margin-bottom: 5px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: var(--color-secondary);
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+
+        .team-info {
+            font-size: 0.9em;
+            color: var(--color-text-dark);
+            margin-bottom: 20px;
+        }
+
+        .summary-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .summary-card {
+            background: var(--color-card-bg);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            flex: 1;
+            min-width: 150px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .summary-card:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .summary-card h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.2em;
+            color: var(--color-text-dark);
+        }
+
+        .summary-card p {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 700;
+        }
+
+        .total p { color: var(--color-secondary); }
+        .realized p { color: var(--color-success); }
+        .unrealized p { color: var(--color-danger); }
+        
+        .content-list {
+            text-align: left;
+        }
+
+        .content-list h3 {
+            font-size: 1.5em;
+            color: var(--color-secondary);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            border-bottom: 2px solid var(--color-secondary);
+            padding-bottom: 5px;
+        }
+
+        .content-list ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .content-item {
+            background: var(--color-bg-light);
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .content-item:hover {
+            transform: translateX(5px);
+            background-color: #e9ecef;
+        }
+        
+        .item-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .item-title {
+            font-size: 1em;
+            font-weight: 600;
+            flex-grow: 1;
+        }
+
+        .status {
+            font-size: 1.5em;
+            font-weight: 700;
+        }
+        
+        .status.realized {
+            color: var(--color-success);
+        }
+
+        .status.unrealized {
+            color: var(--color-danger);
+        }
+        
+        .status.unrealized::before {
+            content: '❌';
+            margin-right: 5px;
+        }
+
+        .status.realized::before {
+            content: '✅';
+            margin-right: 5px;
+        }
+        
+        .item-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .media-link {
+            background: var(--color-primary);
+            color: var(--color-text-light);
+            padding: 5px 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 0.8em;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+
+        .media-link:hover {
+            background-color: var(--color-secondary);
+        }
+
+        .reason {
+            font-style: italic;
+            color: var(--color-text-dark);
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+            backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: linear-gradient(45deg, var(--color-primary), var(--color-secondary));
+            color: var(--color-text-light);
+            padding: 40px;
+            border-radius: 20px;
+            width: 80%;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            position: relative;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .close-button {
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            color: var(--color-text-light);
+            font-size: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .close-button:hover {
+            transform: scale(1.2);
+            color: var(--color-warning);
+        }
+
+        .modal-content h3 {
+            margin-top: 0;
+            font-size: 1.8em;
+        }
+
+        .modal-content p {
+            font-size: 1.2em;
+        }
     </style>
-    <style data-tag="default-style-sheet">
-      html {
-        font-family: Inter;
-        font-size: 16px;
-      }
+</head>
+<body>
 
-      body {
-        font-weight: 400;
-        font-style:normal;
-        text-decoration: none;
-        text-transform: none;
-        letter-spacing: normal;
-        line-height: 1.15;
-        color: var(--dl-color-gray-black);
-        background-color: var(--dl-color-gray-white);
+    <div class="container">
+        <h1>Laporan Realisasi Content Planner</h1>
+        <h2>Periode Bulan Juli 2025</h2>
+        <h3 class="font-bold">SMP Darun Najah 2 Karangploso</h3>
+        <p class="team-info">Waka Humas: Putri Qurotu Aini, S.Pd. | Koordinator Media: Didik Agus Setyo Aji, S.Hum.</p>
 
-      }
-    </style>
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
-      data-tag="font"
-    />
-    <link rel="stylesheet" href="./style.css" />
-  </head>
-  <body>
-    <div>
-      <link href="./landing-page.css" rel="stylesheet" />
-
-      <div class="landing-page-container">
-        <div class="landing-page-landing-page">
-          <img
-            alt="Ellipse1251"
-            src="public/playground_assets/ellipse1251-sg3-1000w.png"
-            class="landing-page-ellipse1"
-          />
-          <div class="landing-page-frame1">
-            <span class="landing-page-text"><span>Didik Agus</span></span>
-          </div>
-          <div class="landing-page-frame6">
-            <div class="landing-page-frame4">
-              <span class="landing-page-text02"><span>Home</span></span>
-              <span class="landing-page-text04"><span>Projects</span></span>
-              <span class="landing-page-text06"><span>About</span></span>
-              <span class="landing-page-text08"><span>Contacts</span></span>
+        <div class="summary-container">
+            <div class="summary-card total" onclick="openModal('Ringkasan Laporan', 'Total konten yang direncanakan dan spontan adalah 20. Klik daftar di bawah untuk melihat detailnya!')">
+                <h3>Total Konten</h3>
+                <p id="total-content">0</p>
             </div>
-            <div class="landing-page-frame5">
-              <img
-                alt="Line1236"
-                src="public/playground_assets/line1236-h3v2k.svg"
-                class="landing-page-line1"
-              />
+            <div class="summary-card realized" onclick="openModal('Konten Terealisasi', 'Sebanyak 18 konten telah berhasil dipublikasi.')">
+                <h3>Telah Terealisasi</h3>
+                <p id="realized-content">0</p>
             </div>
-            <div class="landing-page-frame3">
-              <img
-                alt="instagram227"
-                src="public/playground_assets/instagram227-8gq.svg"
-                class="landing-page-instagram"
-              />
-              <img
-                alt="twitter231"
-                src="public/playground_assets/twitter231-3lrb.svg"
-                class="landing-page-twitter"
-              />
+            <div class="summary-card unrealized" onclick="openModal('Konten Belum Terealisasi', 'Terdapat 2 konten yang belum terealisasi. Pastikan untuk menindaklanjutinya!')">
+                <h3>Belum Terealisasi</h3>
+                <p id="unrealized-content">0</p>
             </div>
-          </div>
-          <div class="landing-page-frame13">
-            <div class="landing-page-container1">
-              <div class="landing-page-frame11">
-                <div class="landing-page-frame10">
-                  <div class="landing-page-frame8">
-                    <span class="landing-page-text10">
-                      HI, I’M DIDIK AGUS SETYO AJI
-                    </span>
-                  </div>
-                  <div class="landing-page-frame7">
-                    <span class="landing-page-text11">I’M ...</span>
-                  </div>
-                </div>
-                <div class="landing-page-frame9">
-                  <span class="landing-page-text12">
-                    <span>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                      Nunc vulputate libero et velit interdum, ac aliquet odio
-                      mattis.
-                    </span>
-                  </span>
-                </div>
-              </div>
-              <img
-                alt="PikPng11022"
-                src="public/playground_assets/pikpng11022-ruad-500h.png"
-                class="landing-page-pik-png1"
-              />
-            </div>
-            <div class="landing-page-frame12">
-              <span class="landing-page-text14">
-                <span>VIEW MY PRJECTS</span>
-              </span>
-            </div>
-          </div>
         </div>
-      </div>
+
+        <div class="content-list">
+            <div id="planned-content"></div>
+            <div id="spontaneous-content"></div>
+        </div>
     </div>
-  </body>
+
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal()">&times;</span>
+            <h3 id="modal-title"></h3>
+            <p id="modal-text"></p>
+        </div>
+    </div>
+
+    <script>
+        // Data konten yang akan ditampilkan di laporan
+        const contentData = [
+            { id: 1, title: "Video MPLS Day 1", status: "realized", type: "planned", media: [{ type: "tiktok", link: "https://vt.tiktok.com/ZSSuNBxX2/" }, { type: "ig", link: "https://www.instagram.com/reel/DL3l-PhPtnq/?igsh=aXRhNWcxMXdzOTd6" }] },
+            { id: 2, title: "Video MPLS Day 2", status: "realized", type: "planned", media: [{ type: "tiktok", link: "https://vt.tiktok.com/ZSSuFR9Q1/" }, { type: "ig", link: "https://www.instagram.com/reel/DL7bpAtPYc5/?igsh=NGdwMTBxMHM1NHk2" }] },
+            { id: 3, title: "Video MPLS Day 3", status: "realized", type: "planned", media: [{ type: "ig", link: "https://www.instagram.com/reel/DL_YpjFvo8d/?igsh=NHJnMXB3NWxoc2t1" }] },
+            { id: 4, title: "Video MPLS Day 4", status: "realized", type: "planned", media: [{ type: "tiktok", link: "https://vt.tiktok.com/ZSSuNoFYu/" }, { type: "ig", link: "https://www.instagram.com/reel/DMHGsw0JF2l/?igsh=MW10anRuNHRhZ3Y0Mw==" }] },
+            { id: 5, title: "Video Reels Apel Pembukaan KBM (Pak Imdad)", status: "realized", type: "planned", media: [{ type: "ig", link: "https://www.instagram.com/reel/DMARxn9vomh/?igsh=MXdtMmFzZXFlZTRxaA==" }] },
+            { id: 6, title: "Video Tes Psikotes Minat Bakat (Pak Imdad)", status: "realized", type: "planned", media: [{ type: "ig", link: "https://www.instagram.com/reel/DMC6o9jv1f0/?igsh=ZmEzaHVha2U1a3k5" }] },
+            { id: 7, title: "Feed Dokumentasi MPLS Day 1", status: "realized", type: "planned", media: [{ type: "ig", link: "https://www.instagram.com/p/DMpuq5ZPUYC/?igsh=eHVlaWk3djlqbnZp" }] },
+            { id: 8, title: "Feed Dokumentasi MPLS Day 2", status: "realized", type: "planned", media: [{ type: "ig", link: "https://www.instagram.com/p/DMsMvSovTVF/?igsh=cjdsMDBtazlwdnZl" }] },
+            { id: 9, title: "Feed Dokumentasi MPLS Day 3", status: "realized", type: "planned", media: [{ type: "ig", link: "https://www.instagram.com/p/DMxfvQuvwxP/?igsh=MTQ1YXRyZ2Qzbmdjcg==" }] },
+            { id: 10, title: "Feed Dokumentasi MPLS Day 4", status: "realized", type: "planned", media: [{ type: "ig", link: "https://www.instagram.com/p/DM0MOT8vGfm/?igsh=enlvcHZiOXZhcHVh" }] },
+            { id: 11, title: "Feed Dokumentasi Pembukaan KBM TA 2025/2026", status: "realized", type: "planned", media: [{ type: "ig", link: "https://www.instagram.com/p/DMmSFoXPUKM/?igsh=cTh1cDN0MXdubTA=" }] },
+            { id: 12, title: "Feed Dokumentasi Tes Psikotes Minat Bakat", status: "unrealized", type: "planned", reason: "lupa", media: [] },
+            { id: 13, title: "Video Tiktok MPLS Day 1 (Bu Putri dan Bu Arin)", status: "realized", type: "planned", media: [] }, // Link tidak disediakan, asumsi tercakup di item lain
+            { id: 14, title: "Video Tiktok MPLS Day 2 (Bu Putri dan Bu Arin)", status: "realized", type: "planned", media: [] },
+            { id: 15, title: "Video Tiktok MPLS Day 4 (Bu Putri)", status: "realized", type: "planned", media: [] },
+            { id: 16, title: "Feed dan Video Kenaikan Pangkat Pramuka", status: "unrealized", type: "planned", reason: "bulan depan", media: [] },
+            { id: 17, title: "Feed Milad Yai", status: "realized", type: "planned", media: [{ type: "ig", link: "https://www.instagram.com/p/DM0MnIovITK/?igsh=cThvMTB0MmJzdDQz" }] },
+            { id: 18, title: "Video Ucapan Milad Yai", status: "realized", type: "planned", media: [{ type: "Ucapan Guru", link: "https://www.instagram.com/reel/DM0M3xRPqHv/?igsh=NTdrNnQyeGkzYjhl" }, { type: "Ucapan Per Kelas (highlight ig story)", link: "#" }] },
+            { id: 1, title: "Pembiasaan Pagi (Bu Putri)", status: "realized", type: "spontaneous", media: [{ type: "ig", link: "https://www.instagram.com/reel/DMmTwSbPpjZ/?igsh=MTMzdnk4eHp0eno1dA==" }] },
+            { id: 2, title: "Pembiasaan Pagi (Cak Ibin)", status: "realized", type: "spontaneous", media: [{ type: "ig", link: "https://www.instagram.com/reel/DMcaT46PT1L/?igsh=MWFxaTV5YXR6d3kxag==" }] },
+            { id: 3, title: "Simulasi ANBK (Pak Imdad dan Cak Ibin)", status: "realized", type: "spontaneous", media: [{ type: "Numerasi", link: "https://www.instagram.com/reel/DMaHrmfv51V/?igsh=aWpzZXlsYjJqbTk1" }, { type: "Literasi", link: "https://www.instagram.com/reel/DMXha0BPB3Q/?igsh=MTRxZGt4dWU3ODdkNA==" }] }
+        ];
+
+        // Fungsi untuk merender daftar konten dan memperbarui ringkasan
+        function renderContentList() {
+            const plannedListElement = document.getElementById('planned-content');
+            const spontaneousListElement = document.getElementById('spontaneous-content');
+            
+            plannedListElement.innerHTML = `<h3>Konten Planner</h3><ul></ul>`;
+            spontaneousListElement.innerHTML = `<h3>Konten Spontan</h3><ul></ul>`;
+
+            let realizedCount = 0;
+            let unrealizedCount = 0;
+            let plannedCounter = 1;
+            let spontaneousCounter = 1;
+
+            contentData.forEach(item => {
+                const li = document.createElement('li');
+                li.classList.add('content-item');
+                
+                const statusClass = item.status === 'realized' ? 'realized' : 'unrealized';
+                
+                if (item.status === 'realized') {
+                    realizedCount++;
+                } else {
+                    unrealizedCount++;
+                }
+
+                const displayId = item.type === "planned" ? plannedCounter++ : spontaneousCounter++;
+                
+                const reasonText = item.reason ? `<p class="reason">Alasan: ${item.reason}</p>` : '';
+                
+                let mediaLinksHtml = '';
+                if (item.media && item.media.length > 0) {
+                    mediaLinksHtml = item.media.map(media => 
+                        `<a href="${media.link}" class="media-link" target="_blank">${media.type}</a>`
+                    ).join('');
+                }
+                
+                li.innerHTML = `
+                    <div class="item-header">
+                        <span class="item-title">${displayId}. ${item.title}</span>
+                        <div class="status ${statusClass}"></div>
+                    </div>
+                    <div class="item-details">
+                        ${mediaLinksHtml}
+                    </div>
+                    ${reasonText}
+                `;
+                
+                if (item.type === "planned") {
+                    plannedListElement.querySelector('ul').appendChild(li);
+                } else {
+                    spontaneousListElement.querySelector('ul').appendChild(li);
+                }
+            });
+
+            document.getElementById('total-content').textContent = contentData.length;
+            document.getElementById('realized-content').textContent = realizedCount;
+            document.getElementById('unrealized-content').textContent = unrealizedCount;
+        }
+
+        // Fungsi untuk membuka pop-up (modal)
+        function openModal(title, text) {
+            const modal = document.getElementById("myModal");
+            document.getElementById("modal-title").textContent = title;
+            document.getElementById("modal-text").textContent = text;
+            modal.style.display = "flex";
+        }
+
+        // Fungsi untuk menutup pop-up (modal)
+        function closeModal() {
+            const modal = document.getElementById("myModal");
+            modal.style.display = "none";
+        }
+        
+        // Menutup modal ketika area di luar modal diklik
+        window.onclick = function(event) {
+            const modal = document.getElementById("myModal");
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        // Memanggil fungsi untuk merender konten saat halaman selesai dimuat
+        document.addEventListener('DOMContentLoaded', renderContentList);
+    </script>
+</body>
 </html>
+
