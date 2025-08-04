@@ -189,6 +189,9 @@
             font-size: 0.8em;
             font-weight: 600;
             transition: background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
 
         .media-link:hover {
@@ -270,11 +273,11 @@
         <p class="team-info">Waka Humas: Putri Qurotu Aini, S.Pd. | Koordinator Media: Didik Agus Setyo Aji, S.Hum.</p>
 
         <div class="summary-container">
-            <div class="summary-card total" onclick="openModal('Ringkasan Laporan', 'Total konten yang direncanakan dan spontan adalah 20. Klik daftar di bawah untuk melihat detailnya!')">
+            <div class="summary-card total" onclick="openModal('Ringkasan Laporan', 'Total konten yang direncanakan dan spontan adalah 18. Klik daftar di bawah untuk melihat detailnya!')">
                 <h3>Total Konten</h3>
                 <p id="total-content">0</p>
             </div>
-            <div class="summary-card realized" onclick="openModal('Konten Terealisasi', 'Sebanyak 18 konten telah berhasil dipublikasi.')">
+            <div class="summary-card realized" onclick="openModal('Konten Terealisasi', 'Sebanyak 16 konten telah berhasil dipublikasi.')">
                 <h3>Telah Terealisasi</h3>
                 <p id="realized-content">0</p>
             </div>
@@ -301,28 +304,32 @@
     <script>
         // Data konten yang akan ditampilkan di laporan
         const contentData = [
-            { id: 1, title: "Video MPLS Day 1", status: "realized", type: "planned", media: [{ type: "tiktok", link: "https://vt.tiktok.com/ZSSuNBxX2/" }, { type: "ig", link: "https://www.instagram.com/reel/DL3l-PhPtnq/?igsh=aXRhNWcxMXdzOTd6" }] },
-            { id: 2, title: "Video MPLS Day 2", status: "realized", type: "planned", media: [{ type: "tiktok", link: "https://vt.tiktok.com/ZSSuFR9Q1/" }, { type: "ig", link: "https://www.instagram.com/reel/DL7bpAtPYc5/?igsh=NGdwMTBxMHM1NHk2" }] },
-            { id: 3, title: "Video MPLS Day 3", status: "realized", type: "planned", media: [{ type: "ig", link: "https://www.instagram.com/reel/DL_YpjFvo8d/?igsh=NHJnMXB3NWxoc2t1" }] },
-            { id: 4, title: "Video MPLS Day 4", status: "realized", type: "planned", media: [{ type: "tiktok", link: "https://vt.tiktok.com/ZSSuNoFYu/" }, { type: "ig", link: "https://www.instagram.com/reel/DMHGsw0JF2l/?igsh=MW10anRuNHRhZ3Y0Mw==" }] },
-            { id: 5, title: "Video Reels Apel Pembukaan KBM (Pak Imdad)", status: "realized", type: "planned", media: [{ type: "ig", link: "https://www.instagram.com/reel/DMARxn9vomh/?igsh=MXdtMmFzZXFlZTRxaA==" }] },
-            { id: 6, title: "Video Tes Psikotes Minat Bakat (Pak Imdad)", status: "realized", type: "planned", media: [{ type: "ig", link: "https://www.instagram.com/reel/DMC6o9jv1f0/?igsh=ZmEzaHVha2U1a3k5" }] },
-            { id: 7, title: "Feed Dokumentasi MPLS Day 1", status: "realized", type: "planned", media: [{ type: "ig", link: "https://www.instagram.com/p/DMpuq5ZPUYC/?igsh=eHVlaWk3djlqbnZp" }] },
-            { id: 8, title: "Feed Dokumentasi MPLS Day 2", status: "realized", type: "planned", media: [{ type: "ig", link: "https://www.instagram.com/p/DMsMvSovTVF/?igsh=cjdsMDBtazlwdnZl" }] },
-            { id: 9, title: "Feed Dokumentasi MPLS Day 3", status: "realized", type: "planned", media: [{ type: "ig", link: "https://www.instagram.com/p/DMxfvQuvwxP/?igsh=MTQ1YXRyZ2Qzbmdjcg==" }] },
-            { id: 10, title: "Feed Dokumentasi MPLS Day 4", status: "realized", type: "planned", media: [{ type: "ig", link: "https://www.instagram.com/p/DM0MOT8vGfm/?igsh=enlvcHZiOXZhcHVh" }] },
-            { id: 11, title: "Feed Dokumentasi Pembukaan KBM TA 2025/2026", status: "realized", type: "planned", media: [{ type: "ig", link: "https://www.instagram.com/p/DMmSFoXPUKM/?igsh=cTh1cDN0MXdubTA=" }] },
+            // Konten Planner
+            { id: 1, title: "Video MPLS Day 1", status: "realized", type: "planned", media: [{ type: "tiktok", link: "https://vt.tiktok.com/ZSSuNBxX2/" }, { type: "instagram", link: "https://www.instagram.com/reel/DL3l-PhPtnq/?igsh=aXRhNWcxMXdzOTd6" }] },
+            { id: 2, title: "Video MPLS Day 2", status: "realized", type: "planned", media: [{ type: "tiktok", link: "https://vt.tiktok.com/ZSSuFR9Q1/" }, { type: "instagram", link: "https://www.instagram.com/reel/DL7bpAtPYc5/?igsh=NGdwMTBxMHM1NHk2" }] },
+            { id: 3, title: "Video MPLS Day 3", status: "realized", type: "planned", media: [{ type: "instagram", link: "https://www.instagram.com/reel/DL_YpjFvo8d/?igsh=NHJnMXB3NWxoc2t1" }] },
+            { id: 4, title: "Video MPLS Day 4", status: "realized", type: "planned", media: [{ type: "tiktok", link: "https://vt.tiktok.com/ZSSuNoFYu/" }, { type: "instagram", link: "https://www.instagram.com/reel/DMHGsw0JF2l/?igsh=MW10anRuNHRhZ3Y0Mw==" }] },
+            { id: 5, title: "Video Reels Apel Pembukaan KBM (Pak Imdad)", status: "realized", type: "planned", media: [{ type: "instagram", link: "https://www.instagram.com/reel/DMARxn9vomh/?igsh=MXdtMmFzZXFlZTRxaA==" }] },
+            { id: 6, title: "Video Tes Psikotes Minat Bakat (Pak Imdad)", status: "realized", type: "planned", media: [{ type: "instagram", link: "https://www.instagram.com/reel/DMC6o9jv1f0/?igsh=ZmEzaHVha2U1a3k5" }] },
+            { id: 7, title: "Feed Dokumentasi MPLS Day 1", status: "realized", type: "planned", media: [{ type: "instagram", link: "https://www.instagram.com/p/DMpuq5ZPUYC/?igsh=eHVlaWk3djlqbnZp" }] },
+            { id: 8, title: "Feed Dokumentasi MPLS Day 2", status: "realized", type: "planned", media: [{ type: "instagram", link: "https://www.instagram.com/p/DMsMvSovTVF/?igsh=cjdsMDBtazlwdnZl" }] },
+            { id: 9, title: "Feed Dokumentasi MPLS Day 3", status: "realized", type: "planned", media: [{ type: "instagram", link: "https://www.instagram.com/p/DMxfvQuvwxP/?igsh=MTQ1YXRyZ2Qzbmdjcg==" }] },
+            { id: 10, title: "Feed Dokumentasi MPLS Day 4", status: "realized", type: "planned", media: [{ type: "instagram", link: "https://www.instagram.com/p/DM0MOT8vGfm/?igsh=enlvcHZiOXZhcHVh" }] },
+            { id: 11, title: "Feed Dokumentasi Pembukaan KBM TA 2025/2026", status: "realized", type: "planned", media: [{ type: "instagram", link: "https://www.instagram.com/p/DMmSFoXPUKM/?igsh=cTh1cDN0MXdubTA=" }] },
             { id: 12, title: "Feed Dokumentasi Tes Psikotes Minat Bakat", status: "unrealized", type: "planned", reason: "lupa", media: [] },
-            { id: 13, title: "Video Tiktok MPLS Day 1 (Bu Putri dan Bu Arin)", status: "realized", type: "planned", media: [] }, // Link tidak disediakan, asumsi tercakup di item lain
-            { id: 14, title: "Video Tiktok MPLS Day 2 (Bu Putri dan Bu Arin)", status: "realized", type: "planned", media: [] },
-            { id: 15, title: "Video Tiktok MPLS Day 4 (Bu Putri)", status: "realized", type: "planned", media: [] },
-            { id: 16, title: "Feed dan Video Kenaikan Pangkat Pramuka", status: "unrealized", type: "planned", reason: "bulan depan", media: [] },
-            { id: 17, title: "Feed Milad Yai", status: "realized", type: "planned", media: [{ type: "ig", link: "https://www.instagram.com/p/DM0MnIovITK/?igsh=cThvMTB0MmJzdDQz" }] },
-            { id: 18, title: "Video Ucapan Milad Yai", status: "realized", type: "planned", media: [{ type: "Ucapan Guru", link: "https://www.instagram.com/reel/DM0M3xRPqHv/?igsh=NTdrNnQyeGkzYjhl" }, { type: "Ucapan Per Kelas (highlight ig story)", link: "#" }] },
-            { id: 1, title: "Pembiasaan Pagi (Bu Putri)", status: "realized", type: "spontaneous", media: [{ type: "ig", link: "https://www.instagram.com/reel/DMmTwSbPpjZ/?igsh=MTMzdnk4eHp0eno1dA==" }] },
-            { id: 2, title: "Pembiasaan Pagi (Cak Ibin)", status: "realized", type: "spontaneous", media: [{ type: "ig", link: "https://www.instagram.com/reel/DMcaT46PT1L/?igsh=MWFxaTV5YXR6d3kxag==" }] },
-            { id: 3, title: "Simulasi ANBK (Pak Imdad dan Cak Ibin)", status: "realized", type: "spontaneous", media: [{ type: "Numerasi", link: "https://www.instagram.com/reel/DMaHrmfv51V/?igsh=aWpzZXlsYjJqbTk1" }, { type: "Literasi", link: "https://www.instagram.com/reel/DMXha0BPB3Q/?igsh=MTRxZGt4dWU3ODdkNA==" }] }
+            { id: 13, title: "Feed dan Video Kenaikan Pangkat Pramuka", status: "unrealized", type: "planned", reason: "bulan depan", media: [] },
+            { id: 14, title: "Feed Milad Yai", status: "realized", type: "planned", media: [{ type: "instagram", link: "https://www.instagram.com/p/DM0MnIovITK/?igsh=cThvMTB0MmJzdDQz" }] },
+            { id: 15, title: "Video Ucapan Milad Yai", status: "realized", type: "planned", media: [{ type: "Ucapan Guru", link: "https://www.instagram.com/reel/DM0M3xRPqHv/?igsh=NTdrNnQyeGkzYjhl" }, { type: "Highlight IG Story", link: "https://www.instagram.com/s/aGlnaGxpZ2h0OjE3OTI2ODg2MDY3MDk2MDUx?story_media_id=3689555567958738528_63982751118&igsh=MTcwczZ4dzJpbXJ1dg==" }] },
+
+            // Konten Spontan
+            { id: 16, title: "Pembiasaan Pagi (Bu Putri)", status: "realized", type: "spontaneous", media: [{ type: "instagram", link: "https://www.instagram.com/reel/DMmTwSbPpjZ/?igsh=MTMzdnk4eHp0eno1dA==" }] },
+            { id: 17, title: "Pembiasaan Pagi (Cak Ibin)", status: "realized", type: "spontaneous", media: [{ type: "instagram", link: "https://www.instagram.com/reel/DMcaT46PT1L/?igsh=MWFxaTV5YXR6d3kxag==" }] },
+            { id: 18, title: "Simulasi ANBK (Pak Imdad dan Cak Ibin)", status: "realized", type: "spontaneous", media: [{ type: "Numerasi", link: "https://www.instagram.com/reel/DMaHrmfv51V/?igsh=aWpzZXlsYjJqbTk1" }, { type: "Literasi", link: "https://www.instagram.com/reel/DMXha0BPB3Q/?igsh=MTRxZGt4dWU3ODdkNA==" }] }
         ];
+
+        // SVG Icons (Inline for self-contained code)
+        const tiktokIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"> <path d="M9 0H7a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM6 8a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V8zm-1 8h2v-4h-2a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2z"/> <path d="M12.981 12.356a1 1 0 1 0 .285-.965l-.353-.186c-1.396-.736-2.505-1.928-3.085-3.328a1 1 0 0 0-1.897.632c.24 1.706 1.488 3.125 3.327 4.095l.325.17z"/> <path d="M11 6a.5.5 0 0 0-.5-.5h-2a.5.5 0 0 0 0 1h2a.5.5 0 0 0 .5-.5zm-2 2a.5.5 0 0 0-.5-.5h-2a.5.5 0 0 0 0 1h2a.5.5 0 0 0 .5-.5z"/> </svg>`;
+        const instagramIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"> <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.273.22 2.76.42a3.9 3.9 0 0 0-1.417.923A3.9 3.9 0 0 0 .42 2.76C.22 3.273.088 3.85.048 4.703.01 5.555 0 5.827 0 8s.01 2.445.048 3.297c.04.853.174 1.432.374 1.944.206.538.455.959.923 1.417.46.458.879.707 1.417.923.51.206 1.08.34 1.944.374C5.555 15.99 5.827 16 8 16s2.445-.01 3.297-.048c.853-.04 1.432-.174 1.944-.374.538-.206.959-.455 1.417-.923a3.9 3.9 0 0 0 .923-1.417c.206-.51.34-1.08.374-1.944C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.297c-.04-.853-.174-1.432-.374-1.944a3.9 3.9 0 0 0-.923-1.417A3.9 3.9 0 0 0 13.24.42c-.51-.2-.88-.335-1.944-.374C10.445.01 10.173 0 8 0zm0 1.25c2.164 0 2.438.008 3.29.046.756.035 1.22.158 1.547.288a2.6 2.6 0 0 1 .945.718 2.6 2.6 0 0 1 .718.945c.13.327.253.791.288 1.547.038.852.046 1.125.046 3.29s-.008 2.438-.046 3.29c-.035.756-.158 1.22-.288 1.547a2.6 2.6 0 0 1-.718.945 2.6 2.6 0 0 1-.945.718c-.327.13-.791.253-1.547.288-.852.038-1.125.046-3.29.046s-2.438-.008-3.29-.046c-.756-.035-1.22-.158-1.547-.288a2.6 2.6 0 0 1-.945-.718 2.6 2.6 0 0 1-.718-.945c-.13-.327-.253-.791-.288-1.547-.038-.852-.046-1.125-.046-3.29s.008-2.438.046-3.29c.035-.756.158-1.22.288-1.547a2.6 2.6 0 0 1 .718-.945A2.6 2.6 0 0 1 2.76.42c.327-.13.791-.253 1.547-.288C5.562.008 5.835 0 8 0zm0 2.875A5.125 5.125 0 1 0 8 13.125 5.125 5.125 0 0 0 8 2.875zM8 4a4 4 0 1 1 0 8 4 4 0 0 1 0-8zm-4.75 1.5a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5z"/> </svg>`;
 
         // Fungsi untuk merender daftar konten dan memperbarui ringkasan
         function renderContentList() {
@@ -355,9 +362,16 @@
                 
                 let mediaLinksHtml = '';
                 if (item.media && item.media.length > 0) {
-                    mediaLinksHtml = item.media.map(media => 
-                        `<a href="${media.link}" class="media-link" target="_blank">${media.type}</a>`
-                    ).join('');
+                    mediaLinksHtml = item.media.map(media => {
+                        let icon = '';
+                        if (media.type.toLowerCase() === 'tiktok') {
+                            icon = tiktokIcon;
+                        } else if (media.type.toLowerCase().includes('instagram') || media.type.toLowerCase().includes('ig')) {
+                            icon = instagramIcon;
+                        }
+                        
+                        return `<a href="${media.link}" class="media-link" target="_blank">${icon} ${media.type}</a>`;
+                    }).join('');
                 }
                 
                 li.innerHTML = `
