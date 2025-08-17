@@ -3,425 +3,290 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laporan Realisasi Content Planner SMP Darun Najah 2</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>Generator Twibbon Kustom</title>
+    <!-- Menggunakan Tailwind CSS untuk styling -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Menggunakan font Inter dari Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --color-primary: #6a11cb;
-            --color-secondary: #2575fc;
-            --color-success: #28a745;
-            --color-danger: #dc3545;
-            --color-warning: #ffc107;
-            --color-bg-light: #f8f9fa;
-            --color-text-dark: #343a40;
-            --color-text-light: #ffffff;
-            --color-card-bg: #ffffff;
-        }
-
+        /* Style kustom untuk body dan canvas */
         body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
-            color: var(--color-text-dark);
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
         }
-
-        .container {
+        /* Membuat canvas dan frame twibbon responsif dan menjaga rasio aspek */
+        .canvas-container {
+            position: relative;
             width: 100%;
-            max-width: 900px;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            text-align: center;
-            backdrop-filter: blur(10px);
+            padding-top: 100%; /* 1:1 Aspect Ratio */
+            background-color: #e5e7eb;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            cursor: move;
         }
-
-        h1 {
-            color: var(--color-primary);
-            font-size: 2.5em;
-            margin-bottom: 5px;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-        }
-
-        h2 {
-            color: var(--color-secondary);
-            font-size: 1.5em;
-            margin-bottom: 20px;
-        }
-
-        .team-info {
-            font-size: 0.9em;
-            color: var(--color-text-dark);
-            margin-bottom: 20px;
-        }
-
-        .summary-container {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .summary-card {
-            background: var(--color-card-bg);
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            flex: 1;
-            min-width: 150px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            cursor: pointer;
-        }
-        
-        .summary-card:hover {
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-        }
-
-        .summary-card h3 {
-            margin: 0 0 10px 0;
-            font-size: 1.2em;
-            color: var(--color-text-dark);
-        }
-
-        .summary-card p {
-            margin: 0;
-            font-size: 2.5em;
-            font-weight: 700;
-        }
-
-        .total p { color: var(--color-secondary); }
-        .realized p { color: var(--color-success); }
-        .unrealized p { color: var(--color-danger); }
-        
-        .content-list {
-            text-align: left;
-        }
-
-        .content-list h3 {
-            font-size: 1.5em;
-            color: var(--color-secondary);
-            margin-top: 30px;
-            margin-bottom: 10px;
-            border-bottom: 2px solid var(--color-secondary);
-            padding-bottom: 5px;
-        }
-
-        .content-list ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        
-        .content-item {
-            background: var(--color-bg-light);
-            padding: 15px 20px;
-            margin-bottom: 10px;
-            border-radius: 10px;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            transition: background-color 0.3s ease, transform 0.3s ease;
-        }
-
-        .content-item:hover {
-            transform: translateX(5px);
-            background-color: #e9ecef;
-        }
-        
-        .item-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-
-        .item-title {
-            font-size: 1em;
-            font-weight: 600;
-            flex-grow: 1;
-        }
-
-        .status {
-            font-size: 1.5em;
-            font-weight: 700;
-        }
-        
-        .status.realized {
-            color: var(--color-success);
-        }
-
-        .status.unrealized {
-            color: var(--color-danger);
-        }
-        
-        .status.unrealized::before {
-            content: '❌';
-            margin-right: 5px;
-        }
-
-        .status.realized::before {
-            content: '✅';
-            margin-right: 5px;
-        }
-        
-        .item-details {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            align-items: center;
-            justify-content: flex-start;
-        }
-
-        .media-link {
-            background: var(--color-primary);
-            color: var(--color-text-light);
-            padding: 5px 10px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-size: 0.8em;
-            font-weight: 600;
-            transition: background-color 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .media-link:hover {
-            background-color: var(--color-secondary);
-        }
-
-        .reason {
-            font-style: italic;
-            color: var(--color-text-dark);
-            font-size: 0.9em;
-            margin-top: 5px;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
+        canvas, #twibbonFrame {
+            position: absolute;
             top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.4);
-            backdrop-filter: blur(5px);
-            justify-content: center;
-            align-items: center;
         }
-
-        .modal-content {
-            background: linear-gradient(45deg, var(--color-primary), var(--color-secondary));
-            color: var(--color-text-light);
-            padding: 40px;
-            border-radius: 20px;
-            width: 80%;
-            max-width: 500px;
-            text-align: center;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-            position: relative;
-            animation: fadeIn 0.5s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .close-button {
-            position: absolute;
-            top: 15px;
-            right: 25px;
-            color: var(--color-text-light);
-            font-size: 30px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-        .close-button:hover {
-            transform: scale(1.2);
-            color: var(--color-warning);
-        }
-
-        .modal-content h3 {
-            margin-top: 0;
-            font-size: 1.8em;
-        }
-
-        .modal-content p {
-            font-size: 1.2em;
+        /* Menyembunyikan frame sampai gambar twibbon berhasil dimuat */
+        #twibbonFrame {
+            pointer-events: none; /* Agar frame tidak menghalangi interaksi mouse dengan canvas */
         }
     </style>
 </head>
-<body>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
 
-    <div class="container">
-        <h1>Laporan Realisasi Content Planner</h1>
-        <h2>Periode Bulan Juli 2025</h2>
-        <h3 class="font-bold">SMP Darun Najah 2 Karangploso</h3>
-        <p class="team-info">Waka Humas: Putri Qurotu Aini, S.Pd. | Koordinator Media: Didik Agus Setyo Aji, S.Hum.</p>
+    <main class="w-full max-w-lg">
+        <div class="bg-white rounded-xl shadow-2xl p-6 md:p-8">
+            
+            <!-- Header -->
+            <div class="text-center mb-6">
+                <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Buat Twibbon Anda</h1>
+                <p class="text-gray-500 mt-2">Unggah foto Anda untuk dipasangkan dengan bingkai.</p>
+            </div>
 
-        <div class="summary-container">
-            <div class="summary-card total" onclick="openModal('Ringkasan Laporan', 'Total konten yang direncanakan dan spontan adalah 18. Klik daftar di bawah untuk melihat detailnya!')">
-                <h3>Total Konten</h3>
-                <p id="total-content">0</p>
+            <!-- Area Canvas dan Frame -->
+            <div id="canvasContainer" class="canvas-container mb-6">
+                <canvas id="twibbonCanvas"></canvas>
+                <!-- Gambar frame twibbon akan ditampilkan di atas canvas -->
+                <img id="twibbonFrame" src="" alt="Bingkai Twibbon" 
+                     onerror="this.onerror=null; this.src='https://placehold.co/500x500/e0e0e0/777?text=Gagal+Memuat+Twibbon';">
             </div>
-            <div class="summary-card realized" onclick="openModal('Konten Terealisasi', 'Sebanyak 16 konten telah berhasil dipublikasi.')">
-                <h3>Telah Terealisasi</h3>
-                <p id="realized-content">0</p>
+
+            <!-- Kontrol Pengguna -->
+            <div class="space-y-4">
+                <!-- Tombol Upload Foto -->
+                <div>
+                    <label for="imageLoader" class="w-full inline-block text-center bg-blue-600 text-white font-semibold py-3 px-4 rounded-lg cursor-pointer hover:bg-blue-700 transition-colors duration-300">
+                        Pilih Foto
+                    </label>
+                    <input type="file" id="imageLoader" class="hidden" accept="image/*">
+                </div>
+
+                <!-- Slider untuk Scale/Zoom -->
+                <div class="space-y-2">
+                    <label for="scaleSlider" class="font-medium text-gray-700">Atur Ukuran Foto</label>
+                    <input id="scaleSlider" type="range" min="0.1" max="3" step="0.01" value="1" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" disabled>
+                </div>
+
+                <!-- Tombol Download -->
+                <button id="downloadBtn" class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-green-700 transition-colors duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed" disabled>
+                    Unduh Hasil
+                </button>
             </div>
-            <div class="summary-card unrealized" onclick="openModal('Konten Belum Terealisasi', 'Terdapat 2 konten yang belum terealisasi. Pastikan untuk menindaklanjutinya!')">
-                <h3>Belum Terealisasi</h3>
-                <p id="unrealized-content">0</p>
-            </div>
+            
         </div>
 
-        <div class="content-list">
-            <div id="planned-content"></div>
-            <div id="spontaneous-content"></div>
-        </div>
-    </div>
-
-    <div id="myModal" class="modal">
-        <div class="modal-content">
-            <span class="close-button" onclick="closeModal()">&times;</span>
-            <h3 id="modal-title"></h3>
-            <p id="modal-text"></p>
-        </div>
-    </div>
+        <!-- Footer -->
+        <footer class="text-center py-4 mt-4">
+            <p class="text-sm text-gray-500">
+                &copy; smpdn2 - HUT KE-80 REPUBLIK INDONESIA
+            </p>
+        </footer>
+    </main>
 
     <script>
-        // Data konten yang akan ditampilkan di laporan
-        const contentData = [
-            // Konten Planner
-            { id: 1, title: "Video MPLS Day 1", status: "realized", type: "planned", media: [{ type: "tiktok", link: "https://vt.tiktok.com/ZSSuNBxX2/" }, { type: "instagram", link: "https://www.instagram.com/reel/DL3l-PhPtnq/?igsh=aXRhNWcxMXdzOTd6" }] },
-            { id: 2, title: "Video MPLS Day 2", status: "realized", type: "planned", media: [{ type: "tiktok", link: "https://vt.tiktok.com/ZSSuFR9Q1/" }, { type: "instagram", link: "https://www.instagram.com/reel/DL7bpAtPYc5/?igsh=NGdwMTBxMHM1NHk2" }] },
-            { id: 3, title: "Video MPLS Day 3", status: "realized", type: "planned", media: [{ type: "instagram", link: "https://www.instagram.com/reel/DL_YpjFvo8d/?igsh=NHJnMXB3NWxoc2t1" }] },
-            { id: 4, title: "Video MPLS Day 4", status: "realized", type: "planned", media: [{ type: "tiktok", link: "https://vt.tiktok.com/ZSSuNoFYu/" }, { type: "instagram", link: "https://www.instagram.com/reel/DMHGsw0JF2l/?igsh=MW10anRuNHRhZ3Y0Mw==" }] },
-            { id: 5, title: "Video Reels Apel Pembukaan KBM (Pak Imdad)", status: "realized", type: "planned", media: [{ type: "instagram", link: "https://www.instagram.com/reel/DMARxn9vomh/?igsh=MXdtMmFzZXFlZTRxaA==" }] },
-            { id: 6, title: "Video Tes Psikotes Minat Bakat (Pak Imdad)", status: "realized", type: "planned", media: [{ type: "instagram", link: "https://www.instagram.com/reel/DMC6o9jv1f0/?igsh=ZmEzaHVha2U1a3k5" }] },
-            { id: 7, title: "Feed Dokumentasi MPLS Day 1", status: "realized", type: "planned", media: [{ type: "instagram", link: "https://www.instagram.com/p/DMpuq5ZPUYC/?igsh=eHVlaWk3djlqbnZp" }] },
-            { id: 8, title: "Feed Dokumentasi MPLS Day 2", status: "realized", type: "planned", media: [{ type: "instagram", link: "https://www.instagram.com/p/DMsMvSovTVF/?igsh=cjdsMDBtazlwdnZl" }] },
-            { id: 9, title: "Feed Dokumentasi MPLS Day 3", status: "realized", type: "planned", media: [{ type: "instagram", link: "https://www.instagram.com/p/DMxfvQuvwxP/?igsh=MTQ1YXRyZ2Qzbmdjcg==" }] },
-            { id: 10, title: "Feed Dokumentasi MPLS Day 4", status: "realized", type: "planned", media: [{ type: "instagram", link: "https://www.instagram.com/p/DM0MOT8vGfm/?igsh=enlvcHZiOXZhcHVh" }] },
-            { id: 11, title: "Feed Dokumentasi Pembukaan KBM TA 2025/2026", status: "realized", type: "planned", media: [{ type: "instagram", link: "https://www.instagram.com/p/DMmSFoXPUKM/?igsh=cTh1cDN0MXdubTA=" }] },
-            { id: 12, title: "Feed Dokumentasi Tes Psikotes Minat Bakat", status: "unrealized", type: "planned", reason: "lupa", media: [] },
-            { id: 13, title: "Feed dan Video Kenaikan Pangkat Pramuka", status: "unrealized", type: "planned", reason: "bulan depan", media: [] },
-            { id: 14, title: "Feed Milad Yai", status: "realized", type: "planned", media: [{ type: "instagram", link: "https://www.instagram.com/p/DM0MnIovITK/?igsh=cThvMTB0MmJzdDQz" }] },
-            { id: 15, title: "Video Ucapan Milad Yai", status: "realized", type: "planned", media: [{ type: "Ucapan Guru", link: "https://www.instagram.com/reel/DM0M3xRPqHv/?igsh=NTdrNnQyeGkzYjhl" }, { type: "Highlight IG Story", link: "https://www.instagram.com/s/aGlnaGxpZ2h0OjE3OTI2ODg2MDY3MDk2MDUx?story_media_id=3689555567958738528_63982751118&igsh=MTcwczZ4dzJpbXJ1dg==" }] },
+        // --- GANTI URL TWIBBON DI SINI ---
+        // Ganti URL di bawah ini dengan URL gambar PNG transparan Anda.
+        // Anda bisa mengupload gambar twibbon Anda ke imgbb.com, postimages.org, atau hosting gambar lainnya.
+        const twibbonImageUrl = 'https://i.postimg.cc/5yczDdzr/TWIBBON-HUT-RI.png'; 
+        // URL contoh: 'https://i.ibb.co/dG7n8z3/twibbon-frame-example.png'
+        // Placeholder jika URL kosong: 'https://placehold.co/500x500/000000/FFFFFF?text=Letakkan+Twibbon+Disini'
 
-            // Konten Spontan
-            { id: 16, title: "Pembiasaan Pagi (Bu Putri)", status: "realized", type: "spontaneous", media: [{ type: "instagram", link: "https://www.instagram.com/reel/DMmTwSbPpjZ/?igsh=MTMzdnk4eHp0eno1dA==" }] },
-            { id: 17, title: "Pembiasaan Pagi (Cak Ibin)", status: "realized", type: "spontaneous", media: [{ type: "instagram", link: "https://www.instagram.com/reel/DMcaT46PT1L/?igsh=MWFxaTV5YXR6d3kxag==" }] },
-            { id: 18, title: "Simulasi ANBK (Pak Imdad dan Cak Ibin)", status: "realized", type: "spontaneous", media: [{ type: "Numerasi", link: "https://www.instagram.com/reel/DMaHrmfv51V/?igsh=aWpzZXlsYjJqbTk1" }, { type: "Literasi", link: "https://www.instagram.com/reel/DMXha0BPB3Q/?igsh=MTRxZGt4dWU3ODdkNA==" }] }
-        ];
+        // Mendapatkan elemen-elemen dari DOM
+        const canvas = document.getElementById('twibbonCanvas');
+        const ctx = canvas.getContext('2d');
+        const imageLoader = document.getElementById('imageLoader');
+        const scaleSlider = document.getElementById('scaleSlider');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const twibbonFrame = document.getElementById('twibbonFrame');
 
-        // SVG Icons (Inline for self-contained code)
-        const tiktokIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"> <path d="M9 0H7a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM6 8a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V8zm-1 8h2v-4h-2a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2z"/> <path d="M12.981 12.356a1 1 0 1 0 .285-.965l-.353-.186c-1.396-.736-2.505-1.928-3.085-3.328a1 1 0 0 0-1.897.632c.24 1.706 1.488 3.125 3.327 4.095l.325.17z"/> <path d="M11 6a.5.5 0 0 0-.5-.5h-2a.5.5 0 0 0 0 1h2a.5.5 0 0 0 .5-.5zm-2 2a.5.5 0 0 0-.5-.5h-2a.5.5 0 0 0 0 1h2a.5.5 0 0 0 .5-.5z"/> </svg>`;
-        const instagramIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"> <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.273.22 2.76.42a3.9 3.9 0 0 0-1.417.923A3.9 3.9 0 0 0 .42 2.76C.22 3.273.088 3.85.048 4.703.01 5.555 0 5.827 0 8s.01 2.445.048 3.297c.04.853.174 1.432.374 1.944.206.538.455.959.923 1.417.46.458.879.707 1.417.923.51.206 1.08.34 1.944.374C5.555 15.99 5.827 16 8 16s2.445-.01 3.297-.048c.853-.04 1.432-.174 1.944-.374.538-.206.959-.455 1.417-.923a3.9 3.9 0 0 0 .923-1.417c.206-.51.34-1.08.374-1.944C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.297c-.04-.853-.174-1.432-.374-1.944a3.9 3.9 0 0 0-.923-1.417A3.9 3.9 0 0 0 13.24.42c-.51-.2-.88-.335-1.944-.374C10.445.01 10.173 0 8 0zm0 1.25c2.164 0 2.438.008 3.29.046.756.035 1.22.158 1.547.288a2.6 2.6 0 0 1 .945.718 2.6 2.6 0 0 1 .718.945c.13.327.253.791.288 1.547.038.852.046 1.125.046 3.29s-.008 2.438-.046 3.29c-.035.756-.158 1.22-.288 1.547a2.6 2.6 0 0 1-.718.945 2.6 2.6 0 0 1-.945.718c-.327.13-.791.253-1.547.288-.852.038-1.125.046-3.29.046s-2.438-.008-3.29-.046c-.756-.035-1.22-.158-1.547-.288a2.6 2.6 0 0 1-.945-.718 2.6 2.6 0 0 1-.718-.945c-.13-.327-.253-.791-.288-1.547-.038-.852-.046-1.125-.046-3.29s.008-2.438.046-3.29c.035-.756.158-1.22.288-1.547a2.6 2.6 0 0 1 .718-.945A2.6 2.6 0 0 1 2.76.42c.327-.13.791-.253 1.547-.288C5.562.008 5.835 0 8 0zm0 2.875A5.125 5.125 0 1 0 8 13.125 5.125 5.125 0 0 0 8 2.875zM8 4a4 4 0 1 1 0 8 4 4 0 0 1 0-8zm-4.75 1.5a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5z"/> </svg>`;
+        // Variabel untuk menyimpan state gambar
+        let userImage = null;
+        let scale = 1;
+        let offsetX = 0;
+        let offsetY = 0;
 
-        // Fungsi untuk merender daftar konten dan memperbarui ringkasan
-        function renderContentList() {
-            const plannedListElement = document.getElementById('planned-content');
-            const spontaneousListElement = document.getElementById('spontaneous-content');
+        // Variabel untuk fungsionalitas drag/geser gambar
+        let isDragging = false;
+        let startDrag = { x: 0, y: 0 };
+
+        // --- Inisialisasi ---
+        // Set sumber gambar untuk frame twibbon
+        twibbonFrame.src = twibbonImageUrl;
+
+        // Saat gambar frame berhasil dimuat, atur ukuran canvas agar sesuai
+        twibbonFrame.onload = () => {
+            // Menggunakan naturalWidth/Height untuk mendapatkan ukuran asli gambar
+            const frameWidth = twibbonFrame.naturalWidth;
+            const frameHeight = twibbonFrame.naturalHeight;
             
-            plannedListElement.innerHTML = `<h3>Konten Planner</h3><ul></ul>`;
-            spontaneousListElement.innerHTML = `<h3>Konten Spontan</h3><ul></ul>`;
+            // Mengatur aspek rasio container berdasarkan gambar frame
+            const canvasContainer = document.getElementById('canvasContainer');
+            canvasContainer.style.paddingTop = `${(frameHeight / frameWidth) * 100}%`;
 
-            let realizedCount = 0;
-            let unrealizedCount = 0;
-            let plannedCounter = 1;
-            let spontaneousCounter = 1;
-
-            contentData.forEach(item => {
-                const li = document.createElement('li');
-                li.classList.add('content-item');
-                
-                const statusClass = item.status === 'realized' ? 'realized' : 'unrealized';
-                
-                if (item.status === 'realized') {
-                    realizedCount++;
-                } else {
-                    unrealizedCount++;
-                }
-
-                const displayId = item.type === "planned" ? plannedCounter++ : spontaneousCounter++;
-                
-                const reasonText = item.reason ? `<p class="reason">Alasan: ${item.reason}</p>` : '';
-                
-                let mediaLinksHtml = '';
-                if (item.media && item.media.length > 0) {
-                    mediaLinksHtml = item.media.map(media => {
-                        let icon = '';
-                        if (media.type.toLowerCase() === 'tiktok') {
-                            icon = tiktokIcon;
-                        } else if (media.type.toLowerCase().includes('instagram') || media.type.toLowerCase().includes('ig')) {
-                            icon = instagramIcon;
-                        }
-                        
-                        return `<a href="${media.link}" class="media-link" target="_blank">${icon} ${media.type}</a>`;
-                    }).join('');
-                }
-                
-                li.innerHTML = `
-                    <div class="item-header">
-                        <span class="item-title">${displayId}. ${item.title}</span>
-                        <div class="status ${statusClass}"></div>
-                    </div>
-                    <div class="item-details">
-                        ${mediaLinksHtml}
-                    </div>
-                    ${reasonText}
-                `;
-                
-                if (item.type === "planned") {
-                    plannedListElement.querySelector('ul').appendChild(li);
-                } else {
-                    spontaneousListElement.querySelector('ul').appendChild(li);
-                }
-            });
-
-            document.getElementById('total-content').textContent = contentData.length;
-            document.getElementById('realized-content').textContent = realizedCount;
-            document.getElementById('unrealized-content').textContent = unrealizedCount;
-        }
-
-        // Fungsi untuk membuka pop-up (modal)
-        function openModal(title, text) {
-            const modal = document.getElementById("myModal");
-            document.getElementById("modal-title").textContent = title;
-            document.getElementById("modal-text").textContent = text;
-            modal.style.display = "flex";
-        }
-
-        // Fungsi untuk menutup pop-up (modal)
-        function closeModal() {
-            const modal = document.getElementById("myModal");
-            modal.style.display = "none";
-        }
+            // Mengatur resolusi canvas agar sesuai dengan gambar frame
+            canvas.width = frameWidth;
+            canvas.height = frameHeight;
+            
+            drawInitialMessage();
+        };
         
-        // Menutup modal ketika area di luar modal diklik
-        window.onclick = function(event) {
-            const modal = document.getElementById("myModal");
-            if (event.target == modal) {
-                modal.style.display = "none";
+        function drawInitialMessage() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#6b7280';
+            ctx.font = '24px Inter';
+            ctx.textAlign = 'center';
+            ctx.fillText('Silakan unggah foto Anda', canvas.width / 2, canvas.height / 2);
+        }
+
+        // --- Event Listeners ---
+        imageLoader.addEventListener('change', handleImageUpload);
+        scaleSlider.addEventListener('input', handleScaling);
+        downloadBtn.addEventListener('click', downloadImage);
+
+        // Event listeners untuk menggeser gambar (mouse)
+        canvas.addEventListener('mousedown', startDragging);
+        canvas.addEventListener('mousemove', dragImage);
+        canvas.addEventListener('mouseup', stopDragging);
+        canvas.addEventListener('mouseleave', stopDragging);
+        
+        // Event listeners untuk menggeser gambar (touch)
+        canvas.addEventListener('touchstart', startDragging, { passive: false });
+        canvas.addEventListener('touchmove', dragImage, { passive: false });
+        canvas.addEventListener('touchend', stopDragging);
+
+        // --- Fungsi-fungsi Handler ---
+
+        function handleImageUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                userImage = new Image();
+                userImage.onload = () => {
+                    // Reset posisi dan skala saat gambar baru diunggah
+                    offsetX = canvas.width / 2;
+                    offsetY = canvas.height / 2;
+                    scale = 1;
+                    scaleSlider.value = 1;
+                    
+                    // Aktifkan kontrol
+                    scaleSlider.disabled = false;
+                    downloadBtn.disabled = false;
+                    
+                    drawImage();
+                };
+                userImage.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function handleScaling(e) {
+            if (!userImage) return;
+            scale = parseFloat(e.target.value);
+            drawImage();
+        }
+
+        // --- Fungsi Drag & Drop ---
+
+        function getEventPosition(e) {
+            if (e.touches && e.touches.length > 0) {
+                const rect = canvas.getBoundingClientRect();
+                return {
+                    x: e.touches[0].clientX - rect.left,
+                    y: e.touches[0].clientY - rect.top
+                };
+            }
+            return { x: e.offsetX, y: e.offsetY };
+        }
+
+        function startDragging(e) {
+            if (!userImage) return;
+            e.preventDefault();
+            isDragging = true;
+            const pos = getEventPosition(e);
+            startDrag.x = pos.x - (offsetX * (canvas.clientWidth / canvas.width));
+            startDrag.y = pos.y - (offsetY * (canvas.clientHeight / canvas.height));
+        }
+
+        function dragImage(e) {
+            if (isDragging && userImage) {
+                e.preventDefault();
+                const pos = getEventPosition(e);
+                offsetX = (pos.x - startDrag.x) * (canvas.width / canvas.clientWidth);
+                offsetY = (pos.y - startDrag.y) * (canvas.height / canvas.clientHeight);
+                drawImage();
             }
         }
 
-        // Memanggil fungsi untuk merender konten saat halaman selesai dimuat
-        document.addEventListener('DOMContentLoaded', renderContentList);
+        function stopDragging() {
+            isDragging = false;
+        }
+
+        // --- Fungsi Utama untuk Menggambar ---
+
+        function drawImage() {
+            if (!userImage) return;
+            
+            // Bersihkan canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.save();
+            
+            // Gambar foto pengguna dengan posisi dan skala yang telah diatur
+            const scaledWidth = userImage.width * scale;
+            const scaledHeight = userImage.height * scale;
+
+            ctx.drawImage(
+                userImage,
+                offsetX - scaledWidth / 2,
+                offsetY - scaledHeight / 2,
+                scaledWidth,
+                scaledHeight
+            );
+            
+            ctx.restore();
+        }
+
+        // --- Fungsi untuk Mengunduh Gambar ---
+
+        function downloadImage() {
+            if (!userImage) return;
+
+            // Buat canvas sementara untuk menggabungkan gambar
+            const tempCanvas = document.createElement('canvas');
+            const tempCtx = tempCanvas.getContext('2d');
+            tempCanvas.width = canvas.width;
+            tempCanvas.height = canvas.height;
+
+            // 1. Gambar foto pengguna ke canvas sementara
+            const scaledWidth = userImage.width * scale;
+            const scaledHeight = userImage.height * scale;
+            tempCtx.drawImage(
+                userImage,
+                offsetX - scaledWidth / 2,
+                offsetY - scaledHeight / 2,
+                scaledWidth,
+                scaledHeight
+            );
+            
+            // 2. Gambar frame twibbon di atasnya
+            tempCtx.drawImage(twibbonFrame, 0, 0, tempCanvas.width, tempCanvas.height);
+
+            // 3. Buat link untuk mengunduh hasilnya
+            const link = document.createElement('a');
+            link.download = 'twibbon-hasil.png';
+            link.href = tempCanvas.toDataURL('image/png');
+            link.click();
+        }
     </script>
+
 </body>
 </html>
+
 
