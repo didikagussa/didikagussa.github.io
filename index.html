@@ -3,287 +3,360 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Twibbon HUT RI SMP Darun Najah 2 Karangploso</title>
-    <!-- Menggunakan Tailwind CSS untuk styling -->
+    <title>Web Interaktif: Petualangan Dunia Warna</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Menggunakan font Inter dari Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Style kustom untuk body dan canvas */
         body {
             font-family: 'Inter', sans-serif;
         }
-        /* Membuat canvas dan frame twibbon responsif dan menjaga rasio aspek */
-        .canvas-container {
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .color-wheel {
             position: relative;
-            width: 100%;
-            padding-top: 100%; /* 1:1 Aspect Ratio */
-            background-color: #e5e7eb;
-            border-radius: 0.5rem;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
             overflow: hidden;
-            cursor: move;
+            margin: 2rem auto;
+            transition: transform 0.3s ease;
         }
-        canvas, #twibbonFrame {
+        .color-slice {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            width: 50%;
+            height: 50%;
+            transform-origin: 100% 100%;
         }
-        /* Menyembunyikan frame sampai gambar twibbon berhasil dimuat */
-        #twibbonFrame {
-            pointer-events: none; /* Agar frame tidak menghalangi interaksi mouse dengan canvas */
+        .color-slice.highlight {
+            border: 4px solid white;
+            z-index: 10;
+        }
+        .harmony-palette div {
+            transition: transform 0.2s ease;
+        }
+        .harmony-palette div:hover {
+            transform: scale(1.1);
         }
     </style>
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+<body class="bg-gray-100 text-gray-800">
 
-    <main class="w-full max-w-lg">
-        <div class="bg-white rounded-xl shadow-2xl p-6 md:p-8">
-            
-            <!-- Header -->
-            <div class="text-center mb-6">
-                <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Twibbon HUT Ke-80 RI SMP Darun Najah 2 Karangploso</h1>
-                <p class="text-gray-500 mt-2">Unggah foto Anda untuk dipasangkan dengan bingkai.</p>
-            </div>
+    <div class="container mx-auto p-4 sm:p-6 md:p-8">
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900">Petualangan di Dunia Warna!</h1>
+            <p class="mt-2 text-lg text-gray-600">Modul Interaktif Desain Grafis untuk Desainer Muda</p>
+        </header>
 
-            <!-- Area Canvas dan Frame -->
-            <div id="canvasContainer" class="canvas-container mb-6">
-                <canvas id="twibbonCanvas"></canvas>
-                <!-- Gambar frame twibbon akan ditampilkan di atas canvas -->
-                <img id="twibbonFrame" src="" alt="Bingkai Twibbon" crossorigin="anonymous"
-                     onerror="this.onerror=null; this.src='https://placehold.co/500x500/e0e0e0/777?text=Gagal+Memuat+Twibbon';">
-            </div>
-
-            <!-- Kontrol Pengguna -->
-            <div class="space-y-4">
-                <!-- Tombol Upload Foto -->
-                <div>
-                    <label for="imageLoader" class="w-full inline-block text-center bg-blue-600 text-white font-semibold py-3 px-4 rounded-lg cursor-pointer hover:bg-blue-700 transition-colors duration-300">
-                        Pilih Foto
-                    </label>
-                    <input type="file" id="imageLoader" class="hidden" accept="image/*">
-                </div>
-
-                <!-- Slider untuk Scale/Zoom -->
-                <div class="space-y-2">
-                    <label for="scaleSlider" class="font-medium text-gray-700">Atur Ukuran Foto</label>
-                    <input id="scaleSlider" type="range" min="0.1" max="3" step="0.01" value="1" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" disabled>
-                </div>
-
-                <!-- Tombol Download -->
-                <button id="downloadBtn" class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-green-700 transition-colors duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed" disabled>
-                    Unduh Hasil
-                </button>
-            </div>
-            
+        <!-- Navigation Tabs -->
+        <div class="bg-white rounded-xl shadow-lg p-2 mb-8 flex flex-wrap justify-center gap-2">
+            <button onclick="changeTab('roda-warna')" class="tab-button bg-blue-500 text-white px-4 py-2 rounded-lg font-semibold flex-grow sm:flex-grow-0">1. Roda Warna</button>
+            <button onclick="changeTab('psikologi-warna')" class="tab-button bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-semibold flex-grow sm:flex-grow-0">2. Psikologi Warna</button>
+            <button onclick="changeTab('harmoni-warna')" class="tab-button bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-semibold flex-grow sm:flex-grow-0">3. Harmoni Warna</button>
+            <button onclick="changeTab('latihan')" class="tab-button bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-semibold flex-grow sm:flex-grow-0">4. Latihan Seru</button>
         </div>
 
-        <!-- Footer -->
-        <footer class="text-center py-4 mt-4">
-            <p class="text-sm text-gray-500">
-                &copy; smpdn2 - HUT KE-80 REPUBLIK INDONESIA
-            </p>
-        </footer>
-    </main>
+        <!-- Content Sections -->
+        <main id="content-container">
+            <!-- 1. Roda Warna -->
+            <section id="roda-warna" class="tab-content active">
+                <div class="bg-white p-6 rounded-xl shadow-lg">
+                    <h2 class="text-2xl font-bold mb-4 text-center">Kenalan dengan Roda Warna</h2>
+                    <p class="text-center mb-6">Anggap saja ini "peta" kita di dunia warna. Klik tombol di bawah untuk melihat keluarga warna!</p>
+                    
+                    <div class="flex justify-center flex-wrap gap-3 mb-6">
+                        <button onclick="highlightColors('primer')" class="bg-red-500 text-white px-4 py-2 rounded-lg">Primer</button>
+                        <button onclick="highlightColors('sekunder')" class="bg-green-500 text-white px-4 py-2 rounded-lg">Sekunder</button>
+                        <button onclick="highlightColors('tersier')" class="bg-yellow-500 text-white px-4 py-2 rounded-lg">Tersier</button>
+                        <button onclick="highlightColors('semua')" class="bg-gray-500 text-white px-4 py-2 rounded-lg">Tampilkan Semua</button>
+                    </div>
+
+                    <div class="color-wheel" id="colorWheel">
+                        <!-- Slices will be generated by JS -->
+                    </div>
+                    <div id="color-info" class="text-center mt-4 p-4 bg-gray-50 rounded-lg min-h-[100px]">
+                        <h3 class="font-bold text-xl mb-2">Pilih sebuah keluarga warna!</h3>
+                        <p>Klik salah satu tombol di atas untuk mempelajari tentang warna primer, sekunder, atau tersier.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. Psikologi Warna -->
+            <section id="psikologi-warna" class="tab-content">
+                <div class="bg-white p-6 rounded-xl shadow-lg">
+                    <h2 class="text-2xl font-bold mb-4 text-center">Warna Punya Perasaan, Lho!</h2>
+                    <p class="text-center mb-8">Setiap warna punya "kepribadian" dan bisa memberikan pesan tertentu. Klik salah satu warna untuk mencari tahu artinya!</p>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 text-center">
+                        <div onclick="showPsychology('merah')" class="p-4 rounded-lg cursor-pointer bg-red-500 text-white font-bold text-lg">Merah</div>
+                        <div onclick="showPsychology('biru')" class="p-4 rounded-lg cursor-pointer bg-blue-500 text-white font-bold text-lg">Biru</div>
+                        <div onclick="showPsychology('kuning')" class="p-4 rounded-lg cursor-pointer bg-yellow-400 text-black font-bold text-lg">Kuning</div>
+                        <div onclick="showPsychology('hijau')" class="p-4 rounded-lg cursor-pointer bg-green-500 text-white font-bold text-lg">Hijau</div>
+                        <div onclick="showPsychology('hitam')" class="p-4 rounded-lg cursor-pointer bg-black text-white font-bold text-lg">Hitam</div>
+                        <div onclick="showPsychology('putih')" class="p-4 rounded-lg cursor-pointer bg-white text-black font-bold text-lg border-2">Putih</div>
+                    </div>
+                    <div id="psychology-info" class="mt-8 p-6 bg-gray-50 rounded-lg min-h-[150px]">
+                        <h3 class="font-bold text-xl mb-2">Pilih satu warna...</h3>
+                        <p>...dan temukan pesan rahasia di baliknya!</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. Harmoni Warna -->
+            <section id="harmoni-warna" class="tab-content">
+                <div class="bg-white p-6 rounded-xl shadow-lg">
+                    <h2 class="text-2xl font-bold mb-4 text-center">Cara Keren Menggabungkan Warna</h2>
+                    <p class="text-center mb-6">Pilih warna dasar dan temukan kombinasi harmonisnya!</p>
+                    
+                    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
+                        <label for="base-color-picker" class="font-semibold">Pilih Warna Dasar:</label>
+                        <input type="color" id="base-color-picker" value="#3b82f6" class="w-16 h-10 rounded-lg">
+                    </div>
+
+                    <div class="flex justify-center flex-wrap gap-3 mb-8">
+                        <button onclick="generateHarmony('monokromatik')" class="bg-indigo-500 text-white px-4 py-2 rounded-lg">Monokromatik</button>
+                        <button onclick="generateHarmony('analog')" class="bg-teal-500 text-white px-4 py-2 rounded-lg">Analog</button>
+                        <button onclick="generateHarmony('komplementer')" class="bg-rose-500 text-white px-4 py-2 rounded-lg">Komplementer</button>
+                    </div>
+
+                    <div id="harmony-info" class="text-center mb-4 p-4 bg-gray-50 rounded-lg">
+                         <h3 class="font-bold text-xl mb-2">Pilih Jenis Harmoni</h3>
+                         <p>Klik tombol di atas untuk membuat palet warna.</p>
+                    </div>
+                    <div id="harmony-palette-container" class="harmony-palette flex justify-center items-center gap-2 sm:gap-4 flex-wrap min-h-[100px]">
+                        <!-- Palet warna akan muncul di sini -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. Latihan -->
+            <section id="latihan" class="tab-content">
+                <div class="bg-white p-8 rounded-xl shadow-lg">
+                    <h2 class="text-2xl font-bold mb-4 text-center">Latihan Seru: Poster "Pentas Seni Sekolah"</h2>
+                    <div class="max-w-2xl mx-auto text-gray-700 space-y-4">
+                        <p>Sekarang giliran kalian beraksi!</p>
+                        <ol class="list-decimal list-inside space-y-3">
+                            <li>
+                                <strong class="font-semibold">Tugas:</strong> Buatlah sebuah desain poster digital sederhana untuk acara "Pentas Seni Sekolah" menggunakan aplikasi desain yang kalian kuasai.
+                            </li>
+                            <li>
+                                <strong class="font-semibold">Tantangan:</strong>
+                                <ul class="list-disc list-inside ml-4 mt-2 space-y-1">
+                                    <li>Pilih salah satu <strong>harmoni warna</strong> yang sudah kita pelajari (Monokromatik, Analog, atau Komplementer).</li>
+                                    <li>Gunakan <strong>hanya</strong> warna-warna dari harmoni yang kamu pilih.</li>
+                                    <li>Pikirkan <strong>kesan/perasaan</strong> apa yang ingin kamu sampaikan melalui postermu. Apakah ceria? Elegan? Atau penuh semangat?</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <strong class="font-semibold">Presentasi:</strong> Nanti, coba ceritakan kenapa kamu memilih kombinasi warna tersebut untuk postermu!
+                            </li>
+                        </ol>
+                        <p class="font-bold text-center text-lg mt-6 text-blue-600">Selamat Mencoba dan Teruslah Bereksperimen!</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
 
     <script>
-        // --- GANTI URL TWIBBON DI SINI ---
-        // Ganti URL di bawah ini dengan URL gambar PNG transparan Anda.
-        // Anda bisa mengupload gambar twibbon Anda ke imgbb.com, postimages.org, atau hosting gambar lainnya.
-        const twibbonImageUrl = 'https://i.postimg.cc/5yczDdzr/TWIBBON-HUT-RI.png'; 
-        // URL contoh: 'https://i.ibb.co/dG7n8z3/twibbon-frame-example.png'
-        // Placeholder jika URL kosong: 'https://placehold.co/500x500/000000/FFFFFF?text=Letakkan+Twibbon+Disini'
-
-        // Mendapatkan elemen-elemen dari DOM
-        const canvas = document.getElementById('twibbonCanvas');
-        const ctx = canvas.getContext('2d');
-        const imageLoader = document.getElementById('imageLoader');
-        const scaleSlider = document.getElementById('scaleSlider');
-        const downloadBtn = document.getElementById('downloadBtn');
-        const twibbonFrame = document.getElementById('twibbonFrame');
-
-        // Variabel untuk menyimpan state gambar
-        let userImage = null;
-        let scale = 1;
-        let offsetX = 0;
-        let offsetY = 0;
-
-        // Variabel untuk fungsionalitas drag/geser gambar
-        let isDragging = false;
-        let startDrag = { x: 0, y: 0 };
-
-        // --- Inisialisasi ---
-        // Set sumber gambar untuk frame twibbon
-        twibbonFrame.src = twibbonImageUrl;
-
-        // Saat gambar frame berhasil dimuat, atur ukuran canvas agar sesuai
-        twibbonFrame.onload = () => {
-            // Menggunakan naturalWidth/Height untuk mendapatkan ukuran asli gambar
-            const frameWidth = twibbonFrame.naturalWidth;
-            const frameHeight = twibbonFrame.naturalHeight;
-            
-            // Mengatur aspek rasio container berdasarkan gambar frame
-            const canvasContainer = document.getElementById('canvasContainer');
-            canvasContainer.style.paddingTop = `${(frameHeight / frameWidth) * 100}%`;
-
-            // Mengatur resolusi canvas agar sesuai dengan gambar frame
-            canvas.width = frameWidth;
-            canvas.height = frameHeight;
-            
-            drawInitialMessage();
+        // Data and initial setup
+        const colors = [
+            { name: 'Merah', hex: '#FF0000', type: 'primer' }, { name: 'Merah-Oranye', hex: '#FF4500', type: 'tersier' },
+            { name: 'Oranye', hex: '#FFA500', type: 'sekunder' }, { name: 'Kuning-Oranye', hex: '#FFD700', type: 'tersier' },
+            { name: 'Kuning', hex: '#FFFF00', type: 'primer' }, { name: 'Kuning-Hijau', hex: '#ADFF2F', type: 'tersier' },
+            { name: 'Hijau', hex: '#008000', type: 'sekunder' }, { name: 'Biru-Hijau', hex: '#00FFFF', type: 'tersier' },
+            { name: 'Biru', hex: '#0000FF', type: 'primer' }, { name: 'Biru-Ungu', hex: '#8A2BE2', type: 'tersier' },
+            { name: 'Ungu', hex: '#800080', type: 'sekunder' }, { name: 'Merah-Ungu', hex: '#C71585', type: 'tersier' }
+        ];
+        
+        const psychologyData = {
+            merah: { title: 'Merah: Berani & Semangat!', text: 'Memberi kesan berani, semangat, energi, dan cinta. Tapi juga bisa berarti bahaya. Banyak dipakai di logo makanan cepat saji untuk menarik perhatian!' },
+            biru: { title: 'Biru: Tenang & Terpercaya', text: 'Memberi kesan tenang, damai, dan profesional. Banyak logo bank atau media sosial pakai warna ini. Tapi bisa juga berarti kesedihan.' },
+            kuning: { title: 'Kuning: Ceria & Optimis', text: 'Memberi kesan ceria, bahagia, dan penuh ide. Warna ini paling mudah dilihat mata, makanya sering dipakai untuk tanda peringatan.' },
+            hijau: { title: 'Hijau: Alami & Segar', text: 'Memberi kesan alami, segar, dan menenangkan. Sering dihubungkan dengan alam, lingkungan, dan kesehatan.' },
+            hitam: { title: 'Hitam: Elegan & Kuat', text: 'Memberi kesan elegan, mewah, kuat, dan misterius. Sering dipakai untuk produk-produk premium.' },
+            putih: { title: 'Putih: Bersih & Sederhana', text: 'Memberi kesan bersih, suci, dan minimalis. Memberikan ruang "napas" dalam desain.' }
         };
-        
-        function drawInitialMessage() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = '#6b7280';
-            ctx.font = '24px Inter';
-            ctx.textAlign = 'center';
-            ctx.fillText('Silakan unggah foto Anda', canvas.width / 2, canvas.height / 2);
+
+        const colorInfoData = {
+            primer: { title: 'Warna Primer (Warna Utama)', text: 'Ini adalah "ibu" dari semua warna: Merah, Kuning, dan Biru. Warna lain lahir dari campuran mereka.' },
+            sekunder: { title: 'Warna Sekunder (Warna Kedua)', text: 'Hasil "pernikahan" dua warna primer: Oranye, Hijau, dan Ungu.' },
+            tersier: { title: 'Warna Tersier (Warna Ketiga)', text: 'Hasil campuran satu warna primer dan satu warna sekunder yang bertetangga.' },
+            semua: { title: 'Semua Warna', text: 'Inilah semua warna dasar dalam roda warna yang kita pelajari.' }
         }
 
-        // --- Event Listeners ---
-        imageLoader.addEventListener('change', handleImageUpload);
-        scaleSlider.addEventListener('input', handleScaling);
-        downloadBtn.addEventListener('click', downloadImage);
+        // --- Tab Navigation ---
+        function changeTab(tabId) {
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => content.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
 
-        // Event listeners untuk menggeser gambar (mouse)
-        canvas.addEventListener('mousedown', startDragging);
-        canvas.addEventListener('mousemove', dragImage);
-        canvas.addEventListener('mouseup', stopDragging);
-        canvas.addEventListener('mouseleave', stopDragging);
-        
-        // Event listeners untuk menggeser gambar (touch)
-        canvas.addEventListener('touchstart', startDragging, { passive: false });
-        canvas.addEventListener('touchmove', dragImage, { passive: false });
-        canvas.addEventListener('touchend', stopDragging);
+            const tabButtons = document.querySelectorAll('.tab-button');
+            tabButtons.forEach(button => {
+                button.classList.remove('bg-blue-500', 'text-white');
+                button.classList.add('bg-gray-200', 'text-gray-700');
+            });
+            event.target.classList.add('bg-blue-500', 'text-white');
+            event.target.classList.remove('bg-gray-200', 'text-gray-700');
+        }
 
-        // --- Fungsi-fungsi Handler ---
+        // --- Roda Warna ---
+        function createColorWheel() {
+            const wheel = document.getElementById('colorWheel');
+            const sliceAngle = 360 / colors.length;
+            colors.forEach((color, i) => {
+                const slice = document.createElement('div');
+                slice.className = 'color-slice';
+                slice.dataset.type = color.type;
+                slice.style.backgroundColor = color.hex;
+                slice.style.transform = `rotate(${i * sliceAngle}deg) skewY(${sliceAngle - 90}deg)`;
+                wheel.appendChild(slice);
+            });
+        }
 
-        function handleImageUpload(e) {
-            const file = e.target.files[0];
-            if (!file) return;
+        function highlightColors(type) {
+            const slices = document.querySelectorAll('.color-slice');
+            slices.forEach(slice => {
+                if (type === 'semua' || slice.dataset.type === type) {
+                    slice.classList.add('highlight');
+                    slice.style.opacity = '1';
+                } else {
+                    slice.classList.remove('highlight');
+                    slice.style.opacity = '0.3';
+                }
+            });
+            const info = colorInfoData[type];
+            document.getElementById('color-info').innerHTML = `<h3 class="font-bold text-xl mb-2">${info.title}</h3><p>${info.text}</p>`;
+        }
 
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                userImage = new Image();
-                userImage.onload = () => {
-                    // Reset posisi dan skala saat gambar baru diunggah
-                    offsetX = canvas.width / 2;
-                    offsetY = canvas.height / 2;
-                    scale = 1;
-                    scaleSlider.value = 1;
-                    
-                    // Aktifkan kontrol
-                    scaleSlider.disabled = false;
-                    downloadBtn.disabled = false;
-                    
-                    drawImage();
-                };
-                userImage.src = event.target.result;
+        // --- Psikologi Warna ---
+        function showPsychology(color) {
+            const info = psychologyData[color];
+            document.getElementById('psychology-info').innerHTML = `<h3 class="font-bold text-xl mb-2">${info.title}</h3><p>${info.text}</p>`;
+        }
+
+        // --- Harmoni Warna ---
+        const colorPicker = document.getElementById('base-color-picker');
+        colorPicker.addEventListener('input', () => {
+             // Clear harmony on new color pick
+            document.getElementById('harmony-palette-container').innerHTML = '';
+            document.getElementById('harmony-info').innerHTML = `<h3 class="font-bold text-xl mb-2">Pilih Jenis Harmoni</h3><p>Klik tombol di atas untuk membuat palet warna.</p>`;
+        });
+
+        function generateHarmony(type) {
+            const baseColor = colorPicker.value;
+            const palette = [baseColor];
+            const hsl = hexToHsl(baseColor);
+            
+            const harmonyInfo = {
+                monokromatik: { title: 'Harmoni Monokromatik', text: 'Satu warna dengan tingkat kecerahan berbeda. Terlihat elegan dan bersih.'},
+                analog: { title: 'Harmoni Analog', text: 'Warna-warna yang bertetangga di roda warna. Terlihat nyaman dan harmonis.'},
+                komplementer: { title: 'Harmoni Komplementer', text: 'Dua warna yang berseberangan. Menciptakan kontras yang kuat dan menarik perhatian.'}
             };
-            reader.readAsDataURL(file);
-        }
 
-        function handleScaling(e) {
-            if (!userImage) return;
-            scale = parseFloat(e.target.value);
-            drawImage();
-        }
-
-        // --- Fungsi Drag & Drop ---
-
-        function getEventPosition(e) {
-            if (e.touches && e.touches.length > 0) {
-                const rect = canvas.getBoundingClientRect();
-                return {
-                    x: e.touches[0].clientX - rect.left,
-                    y: e.touches[0].clientY - rect.top
-                };
+            if (type === 'monokromatik') {
+                palette.push(hslToHex(hsl[0], hsl[1], Math.min(1, hsl[2] * 1.5)));
+                palette.push(hslToHex(hsl[0], hsl[1], hsl[2] * 0.75));
+                palette.push(hslToHex(hsl[0], hsl[1], hsl[2] * 0.5));
+            } else if (type === 'analog') {
+                palette.push(hslToHex((hsl[0] + 30) % 360, hsl[1], hsl[2]));
+                palette.push(hslToHex((hsl[0] - 30 + 360) % 360, hsl[1], hsl[2]));
+            } else if (type === 'komplementer') {
+                palette.push(hslToHex((hsl[0] + 180) % 360, hsl[1], hsl[2]));
+                // Add split complementary for more options
+                palette.push(hslToHex((hsl[0] + 150) % 360, hsl[1], hsl[2]));
+                palette.push(hslToHex((hsl[0] + 210) % 360, hsl[1], hsl[2]));
             }
-            return { x: e.offsetX, y: e.offsetY };
+            
+            displayPalette(palette);
+            const info = harmonyInfo[type];
+            document.getElementById('harmony-info').innerHTML = `<h3 class="font-bold text-xl mb-2">${info.title}</h3><p>${info.text}</p>`;
         }
 
-        function startDragging(e) {
-            if (!userImage) return;
-            e.preventDefault();
-            isDragging = true;
-            const pos = getEventPosition(e);
-            startDrag.x = pos.x - (offsetX * (canvas.clientWidth / canvas.width));
-            startDrag.y = pos.y - (offsetY * (canvas.clientHeight / canvas.height));
+        function displayPalette(palette) {
+            const container = document.getElementById('harmony-palette-container');
+            container.innerHTML = '';
+            palette.forEach(color => {
+                const swatch = document.createElement('div');
+                swatch.className = 'w-20 h-20 sm:w-24 sm:h-24 rounded-lg shadow-md flex items-center justify-center text-xs font-mono cursor-pointer';
+                swatch.style.backgroundColor = color;
+                swatch.textContent = color.toUpperCase();
+                swatch.style.color = getContrastYIQ(color);
+                swatch.title = 'Klik untuk menyalin';
+                swatch.onclick = () => copyToClipboard(color);
+                container.appendChild(swatch);
+            });
+        }
+        
+        function copyToClipboard(text) {
+            const tempInput = document.createElement('input');
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            alert(`Warna ${text} disalin!`);
         }
 
-        function dragImage(e) {
-            if (isDragging && userImage) {
-                e.preventDefault();
-                const pos = getEventPosition(e);
-                offsetX = (pos.x - startDrag.x) * (canvas.width / canvas.clientWidth);
-                offsetY = (pos.y - startDrag.y) * (canvas.height / canvas.clientHeight);
-                drawImage();
+        // --- Color Conversion Utilities ---
+        function hexToHsl(H) {
+            let r = 0, g = 0, b = 0;
+            if (H.length == 4) {
+                r = "0x" + H[1] + H[1]; g = "0x" + H[2] + H[2]; b = "0x" + H[3] + H[3];
+            } else if (H.length == 7) {
+                r = "0x" + H[1] + H[2]; g = "0x" + H[3] + H[4]; b = "0x" + H[5] + H[6];
             }
+            r /= 255; g /= 255; b /= 255;
+            let cmin = Math.min(r,g,b), cmax = Math.max(r,g,b), delta = cmax - cmin, h = 0, s = 0, l = 0;
+            if (delta == 0) h = 0;
+            else if (cmax == r) h = ((g - b) / delta) % 6;
+            else if (cmax == g) h = (b - r) / delta + 2;
+            else h = (r - g) / delta + 4;
+            h = Math.round(h * 60);
+            if (h < 0) h += 360;
+            l = (cmax + cmin) / 2;
+            s = delta == 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
+            return [h, s, l];
         }
 
-        function stopDragging() {
-            isDragging = false;
+        function hslToHex(h, s, l) {
+            let c = (1 - Math.abs(2 * l - 1)) * s,
+                x = c * (1 - Math.abs((h / 60) % 2 - 1)),
+                m = l - c/2, r = 0, g = 0, b = 0;
+            if (0 <= h && h < 60) { r = c; g = x; b = 0; } 
+            else if (60 <= h && h < 120) { r = x; g = c; b = 0; } 
+            else if (120 <= h && h < 180) { r = 0; g = c; b = x; } 
+            else if (180 <= h && h < 240) { r = 0; g = x; b = c; } 
+            else if (240 <= h && h < 300) { r = x; g = 0; b = c; } 
+            else if (300 <= h && h < 360) { r = c; g = 0; b = x; }
+            r = Math.round((r + m) * 255).toString(16);
+            g = Math.round((g + m) * 255).toString(16);
+            b = Math.round((b + m) * 255).toString(16);
+            if (r.length == 1) r = "0" + r;
+            if (g.length == 1) g = "0" + g;
+            if (b.length == 1) b = "0" + b;
+            return "#" + r + g + b;
+        }
+        
+        function getContrastYIQ(hexcolor){
+            hexcolor = hexcolor.replace("#", "");
+            var r = parseInt(hexcolor.substr(0,2),16);
+            var g = parseInt(hexcolor.substr(2,2),16);
+            var b = parseInt(hexcolor.substr(4,2),16);
+            var yiq = ((r*299)+(g*587)+(b*114))/1000;
+            return (yiq >= 128) ? 'black' : 'white';
         }
 
-        // --- Fungsi Utama untuk Menggambar ---
-
-        function drawImage() {
-            if (!userImage) return;
-            
-            // Bersihkan canvas
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.save();
-            
-            // Gambar foto pengguna dengan posisi dan skala yang telah diatur
-            const scaledWidth = userImage.width * scale;
-            const scaledHeight = userImage.height * scale;
-
-            ctx.drawImage(
-                userImage,
-                offsetX - scaledWidth / 2,
-                offsetY - scaledHeight / 2,
-                scaledWidth,
-                scaledHeight
-            );
-            
-            ctx.restore();
-        }
-
-        // --- Fungsi untuk Mengunduh Gambar ---
-
-        function downloadImage() {
-            if (!userImage) return;
-
-            // Buat canvas sementara untuk menggabungkan gambar
-            const tempCanvas = document.createElement('canvas');
-            const tempCtx = tempCanvas.getContext('2d');
-            tempCanvas.width = canvas.width;
-            tempCanvas.height = canvas.height;
-
-            // 1. Gambar foto pengguna ke canvas sementara
-            const scaledWidth = userImage.width * scale;
-            const scaledHeight = userImage.height * scale;
-            tempCtx.drawImage(
-                userImage,
-                offsetX - scaledWidth / 2,
-                offsetY - scaledHeight / 2,
-                scaledWidth,
-                scaledHeight
-            );
-            
-            // 2. Gambar frame twibbon di atasnya
-            tempCtx.drawImage(twibbonFrame, 0, 0, tempCanvas.width, tempCanvas.height);
-
-            // 3. Buat link untuk mengunduh hasilnya
-            const link = document.createElement('a');
-            link.download = 'twibbon-hasil.png';
-            link.href = tempCanvas.toDataURL('image/png');
-            link.click();
-        }
+        // --- Initial Load ---
+        window.onload = function() {
+            createColorWheel();
+            highlightColors('semua');
+        };
     </script>
 
 </body>
